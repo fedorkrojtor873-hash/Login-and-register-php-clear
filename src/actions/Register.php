@@ -1,6 +1,6 @@
 <?php
 
-namespace src\Actions;
+namespace src\actions;
 
 use src\Helpers;
 
@@ -17,6 +17,15 @@ class Register
         $this->helper = new Helpers();
     }
 
+    protected function returnOldValueName()
+    {
+        $this->helper->addOldValue('name' , $this->helper->getAllOfUsers()['name']);
+    }
+    protected function returnOldValueEmail()
+    {
+        $this->helper->addOldValue('email' , $this->helper->getAllOfUsers()['email']);
+    }
+
     public function validation()
     {
 
@@ -24,13 +33,22 @@ class Register
 
 
         if (empty($this->helper->getAllOfUsers()['name'])) {
-           $_SESSION['validation']['name'] = 'Неверное имя';
-
+           $this->helper->addValidationError('name' , 'Введите имя');
         }
 
-        if (!empty($_SESSION['validation'])) {
-            $this->helper->redirect('/register.php');
+        if (filter_var($this->helper->getAllOfUsers()['email'], FILTER_VALIDATE_EMAIL)) {
+            $this->helper->addValidationError('email' , 'Указана неправильная почта');
         }
+
+        if (empty($this->helper->getAllOfUsers()['password'])) {
+            $this->helper->addValidationError('password' , 'Введите пароль');
+        }
+        if(!$this->helper->getAllOfUsers()['password'] === $this->helper->getAllOfUsers()['password_confirmation'])
+        {
+            $this->helper->addValidationError('password' , 'Пароли не совпадают');
+        }
+
+        $this->helper->redirect('/register.php');
 
     }
 }
