@@ -3,6 +3,7 @@ use src\Helpers;
 require_once __DIR__ . "/src/Helpers.php";
 
 $helper = new Helpers();
+
 ?>
 
 <!DOCTYPE html>
@@ -20,9 +21,11 @@ $helper = new Helpers();
             id="name"
             name="name"
             placeholder="Иванов Иван"
-         <?php $helper->mayBeHasError('name'); ?>
-            value="">
-        <small><?php $helper->getErrorMessage('name'); ?></small>
+         <?php $helper->validationErrorAttr('name'); ?>
+            value="<?php $helper->getOldValue('name'); ?>">
+        <?php if($helper->hasValidationError('name')): ?>
+        <small><?php $helper->validationErrorMessage('name'); ?></small>
+        <?php endif; ?>
     </label>
 
     <label for="email">
@@ -32,7 +35,11 @@ $helper = new Helpers();
             id="email"
             name="email"
             placeholder="ivan@areaweb.su"
-            value="">
+                <?php $helper->validationErrorAttr('email'); ?>
+            value="<?php $helper->getOldValue('email'); ?>">
+        <?php if($helper->hasValidationError('email')): ?>
+            <small><?php $helper->validationErrorMessage('email'); ?></small>
+        <?php endif; ?>
 
     </label>
 
@@ -52,6 +59,10 @@ $helper = new Helpers();
                 id="password"
                 name="password"
                 placeholder="******"
+                    <?php $helper->validationErrorAttr('email'); ?>
+            <?php if($helper->hasValidationError('email')): ?>
+                <small><?php $helper->validationErrorMessage('email'); ?></small>
+            <?php endif; ?>
             >
         </label>
 
@@ -61,7 +72,11 @@ $helper = new Helpers();
                 type="password"
                 id="password_confirmation"
                 name="password_confirmation"
+                    <?php $helper->validationErrorAttr('password_confirmation'); ?>
                 placeholder="******"
+            <?php if($helper->hasValidationError('password_confirmation')): ?>
+                <small><?php $helper->validationErrorMessage('password_confirmation'); ?></small>
+            <?php endif; ?>
             >
         </label>
     </div>
@@ -83,7 +98,7 @@ $helper = new Helpers();
         disabled
     >Продолжить</button>
 </form>
-
+<?php $helper->clearValidationErrors(); ?>
 <p>У меня уже есть <a href="/">аккаунт</a></p>
 </body>
 <?php include_once __DIR__ . '/components/scripts.php' ?>
