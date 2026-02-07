@@ -1,11 +1,16 @@
+<?php
+use src\Helpers;
+require_once __DIR__ . "/src/Helpers.php";
 
+$helper = new Helpers();
+?>
 
 <!DOCTYPE html>
 <html lang="ru" data-theme="light">
 <?php include_once __DIR__ . '/components/head.php'?>
 <body>
 
-<form class="card" action="" method="post" enctype="multipart/form-data">
+<form class="card" action="src/actions/Register.php" method="post" enctype="multipart/form-data">
     <h2>Регистрация</h2>
 
     <label for="name">
@@ -15,8 +20,9 @@
             id="name"
             name="name"
             placeholder="Иванов Иван"
+         <?php $helper->mayBeHasError('name'); ?>
             value="">
-
+        <small><?php $helper->getErrorMessage('name'); ?></small>
     </label>
 
     <label for="email">
