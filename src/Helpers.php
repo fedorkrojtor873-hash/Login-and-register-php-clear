@@ -5,7 +5,7 @@ namespace src;
 session_start();
 class Helpers
 {
-    public function redirect(string $url)
+    public function redirect(string $url): bool
     {
         header("Location: $url");
         die();
@@ -20,12 +20,12 @@ class Helpers
             'password_confirmation' => $_POST['password_confirmation'] ?? ''
         ];
     }
-    public function validationErrorAttr(string $fieldName)
+    public function validationErrorAttr(string $fieldName): void
     {
         echo isset($_SESSION['validation'][$fieldName]) ? 'aria-invalid="true" ' : '';
     }
 
-    public function validationErrorMessage(string $fieldName)
+    public function validationErrorMessage(string $fieldName): void
     {
          echo $_SESSION['validation'][$fieldName] ?? '';
     }
@@ -38,12 +38,12 @@ class Helpers
     {
         $_SESSION['validation'][$fieldName] = $message;
     }
-    public function clearValidationErrors()
+    public function clearValidationErrors(): void
     {
         $_SESSION['validation'] = [];
     }
 
-    public function addOldValue(string $key, mixed $value)
+    public function addOldValue(string $key, mixed $value): void
     {
        $_SESSION['oldValues'][$key] = $value;
     }
