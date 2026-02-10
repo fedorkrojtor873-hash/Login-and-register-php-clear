@@ -23,7 +23,7 @@ class login
     {
         $email = $_POST['email'];
         $password = $_POST['password'];
-        $passwordDb = $this->mySQL->getPasswordByEmail($email);
+        $passwordDb = $this->mySQL->getAllByEmail($email);
 
 
         if (empty($email)) {
@@ -48,6 +48,9 @@ class login
         if (!empty($_SESSION['validation'])) {
             $this->helper->redirect('/');
         }
+
+
+
         $this->helper->redirect('/home.php');
 
     }

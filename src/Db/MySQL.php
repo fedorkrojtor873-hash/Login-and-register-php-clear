@@ -33,9 +33,9 @@ class MySQL
     }
 
 
-    public function getPasswordByEmail(string $email): ?string
+    public function getAllByEmail(string $email): array
     {
-        $sql = "SELECT password FROM users WHERE email = '$email' LIMIT 1";
+        $sql = "SELECT * FROM users WHERE email = '$email' LIMIT 1";
         $result = mysqli_query($this->dataBase->getConnection(), $sql);
 
         if (!$result) {
@@ -44,8 +44,10 @@ class MySQL
 
         $user = mysqli_fetch_assoc($result);
 
-        return $user['password'] ?? null;
+        return $user ?: null;
     }
+
+
 
 
     public function storeUser(
