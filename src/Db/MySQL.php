@@ -32,12 +32,28 @@ class MySQL
         return mysqli_num_rows($result) > 0;
     }
 
+
+    public function getPasswordByEmail(string $email): ?string
+    {
+        $sql = "SELECT password FROM users WHERE email = '$email' LIMIT 1";
+        $result = mysqli_query($this->dataBase->getConnection(), $sql);
+
+        if (!$result) {
+            return null;
+        }
+
+        $user = mysqli_fetch_assoc($result);
+
+        return $user['password'] ?? null;
+    }
+
+
     public function storeUser(
-        string $email,
-        string $password,
-        string $name,
+        string  $name,
+        string  $email,
+        string  $password,
         ?string $avatar
-    )
+    ): bool
     {
         return mysqli_query($this->dataBase->getConnection(),
             "INSERT INTO users (name, email ,password , avatar) VALUES ('$name', '$email' , '$password' , '$avatar')");

@@ -1,22 +1,32 @@
+<?php
 
+use src\Helpers;
+
+require_once __DIR__ . "/src/Helpers.php";
+
+$helper = new Helpers();
+
+?>
 <!DOCTYPE html>
 <html lang="ru" data-theme="light">
 <?php include_once __DIR__ . '/components/head.php'?>
 <body>
 
-<form class="card" action="" method="post">
+<form class="card" action="src/actions/login.php" method="post">
     <h2>Вход</h2>
 
-
-
     <label for="email">
-        Имя
+        Email
         <input
             type="text"
             id="email"
             name="email"
-            placeholder="ivan@areaweb.su"
-            value="">
+            placeholder="email@gmail.com"
+            <?php $helper->validationErrorAttr('email'); ?>
+            value="<?php echo $helper->getOldValue('email'); ?>">
+        <?php if ($helper->hasValidationError('email')): ?>
+            <small><?php $helper->validationErrorMessage('email'); ?></small>
+        <?php endif; ?>
     </label>
 
     <label for="password">
@@ -25,7 +35,11 @@
             type="password"
             id="password"
             name="password"
-            placeholder="******">
+            placeholder="******"
+        <?php $helper->validationErrorAttr('password'); ?> >
+        <?php if ($helper->hasValidationError('password')): ?>
+            <small><?php $helper->validationErrorMessage('password'); ?></small>
+        <?php endif; ?>
     </label>
 
     <button
@@ -36,6 +50,9 @@
 
 <p>У меня еще нет <a href="/register.php">аккаунта</a></p>
 <?php include_once __DIR__ . '/components/scripts.php' ?>
-
+<?php
+$helper->clearValidationErrors();
+$helper->clearOldValue();
+?>
 </body>
 </html>

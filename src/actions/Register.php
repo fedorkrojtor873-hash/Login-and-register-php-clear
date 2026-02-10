@@ -72,13 +72,10 @@ class Register
         if (!empty($_SESSION['validation'])) {
             $this->helper->redirect('/register.php');
         }
-
         $password = Password_hash($this->helper->getAllOfUsers()['password'], PASSWORD_DEFAULT);
-
-        $upload = $this->helper->uploadFile($this->helper->getAllOfUsers()['avatar'] ?? null, 'avatar_');
-
-        $this->mySQL->storeUser($this->helper->getAllOfUsers()['email'], $this->helper->getAllOfUsers()['name'], $password, $upload);
-        $this->helper->redirect('/home.php');
+        $upload = $this->helper->uploadFile($this->helper->getAllOfUsers()['avatar'], 'avatar_');
+        $this->mySQL->storeUser($this->helper->getAllOfUsers()['name'], $this->helper->getAllOfUsers()['email'] , $password, $upload);
+        $this->helper->redirect('/');
 
     }
 

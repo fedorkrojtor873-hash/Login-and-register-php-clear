@@ -34,5 +34,3 @@ class DataBase
     }
 }
 
-$sql = new DataBase();
-$sql->getConnection();
