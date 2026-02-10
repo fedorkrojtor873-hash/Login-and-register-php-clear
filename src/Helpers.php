@@ -64,23 +64,28 @@ class Helpers
         $_SESSION['oldValues'] = [];
     }
 
-    public function uploadFile(array $file, string $prefix = ''): string
+
+    public function uploadFile(array $file = null, string $prefix = ''): ?string
     {
-        $uploadPatch = __DIR__ . '/../uploads/';
-
-        if (!is_dir($uploadPatch)) {
-            mkdir($uploadPatch, 0755, true);
+        if (empty($file) || empty($file['tmp_name'])) {
+            return null;
         }
+
+        $uploadPath = __DIR__ . '/../uploads/';
+
+        if (!is_dir($uploadPath)) {
+            mkdir($uploadPath, 0755, true);
+        }
+
         $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
-
         $fileName = $prefix . time() . '.' . $extension;
-
-        $path = "$uploadPatch/$fileName";
+        $path = $uploadPath . '/' . $fileName;
 
         if (!move_uploaded_file($file['tmp_name'], $path)) {
-            die('Ошибка');
+            die('Ошибка добавления файла');
         }
-        return $path;
 
+        return $path;
     }
+
 }
