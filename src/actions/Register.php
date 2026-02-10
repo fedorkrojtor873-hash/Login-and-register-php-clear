@@ -47,11 +47,21 @@ class Register
             $this->helper->addValidationError('password_confirmation', 'Пароли не совпадают');
         }
 
+        if (!empty($this->helper->getAllOfUsers()['avatar'])) {
+            $types = ['image/png', 'image/jpeg'];
+            if (!in_array($this->helper->getAllOfUsers()['avatar']['type'], $types)) {
+                $this->helper->addValidationError('avatar', 'Изображение профиля имеет не верный тип');
+            }
+        }
 
+        if ($this->helper->getAllOfUsers()['avatar']['size'] / 1000000 >= 1) {
+            $this->helper->addValidationError('avatar', 'Изображение должно быть меньше одного мб');
+        }
 
         $this->helper->addOldValue('name', $this->helper->getAllOfUsers()['name']);
         $this->helper->addOldValue('email', $this->helper->getAllOfUsers()['email']);
 
+        $this->helper->uploadFile($this->helper->getAllOfUsers()['avatar'], 'avatar');
 
         $this->helper->redirect('/register.php');
 
