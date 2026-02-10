@@ -21,7 +21,7 @@ class DataBase
 
     protected function getDatabaseName(): string
     {
-        return 'crud';
+        return 'login';
     }
 
     public function getConnection()
@@ -33,3 +33,6 @@ class DataBase
         return $mysqli;
     }
 }
+
+$sql = new DataBase();
+$sql->getConnection();
