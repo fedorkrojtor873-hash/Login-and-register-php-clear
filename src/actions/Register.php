@@ -47,6 +47,8 @@ class Register
             $this->helper->addValidationError('password_confirmation', 'Пароли не совпадают');
         }
 
+
+
         $this->helper->addOldValue('name', $this->helper->getAllOfUsers()['name']);
         $this->helper->addOldValue('email', $this->helper->getAllOfUsers()['email']);
 

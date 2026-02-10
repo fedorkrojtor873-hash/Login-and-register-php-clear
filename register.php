@@ -48,8 +48,12 @@ $helper = new Helpers();
         <input
                 type="file"
                 id="avatar"
-                name="avatar">
-
+                name="avatar"
+                <?php $helper->validationErrorAttr('avatar'); ?>
+        >
+        <?php if ($helper->hasValidationError('avatar')): ?>
+            <small><?php $helper->validationErrorMessage('avatar'); ?></small>
+        <?php endif; ?>
     </label>
 
     <div class="grid">
