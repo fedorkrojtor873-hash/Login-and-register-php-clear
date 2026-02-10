@@ -24,7 +24,7 @@ $helper = new Helpers();
                 name="name"
                 placeholder="Иванов Иван"
                 <?php $helper->validationErrorAttr('name'); ?>
-                value="<?php $helper->getOldValue('name'); ?>">
+                value="<?php echo $helper->getOldValue('name'); ?>">
         <?php if ($helper->hasValidationError('name')): ?>
             <small><?php $helper->validationErrorMessage('name'); ?></small>
         <?php endif; ?>
@@ -36,9 +36,9 @@ $helper = new Helpers();
                 type="text"
                 id="email"
                 name="email"
-                placeholder="ivan@areaweb.su"
+                placeholder="email@gmail.com"
                 <?php $helper->validationErrorAttr('email'); ?>
-                value="<?php $helper->getOldValue('email'); ?>">
+                value="<?php echo $helper->getOldValue('email'); ?>">
         <?php if ($helper->hasValidationError('email')): ?>
             <small><?php $helper->validationErrorMessage('email'); ?></small>
         <?php endif; ?>
@@ -99,7 +99,10 @@ $helper = new Helpers();
     >Продолжить
     </button>
 </form>
-<?php $helper->clearValidationErrors(); ?>
+<?php
+$helper->clearValidationErrors();
+$helper->clearOldValue();
+?>
 <p>У меня уже есть <a href="/">аккаунт</a></p>
 </body>
 <?php include_once __DIR__ . '/components/scripts.php' ?>
