@@ -2,29 +2,23 @@
 
 namespace src\actions;
 
+use Db\MySQL;
 use src\Helpers;
 
 require_once __DIR__ . '/../Helpers.php';
+require_once __DIR__ . '/../Db/MYSQL.php';
 
 
 class Register
 {
 
     protected Helpers $helper;
+    protected MySQL $mySQL;
 
     public function __construct()
     {
         $this->helper = new Helpers();
-    }
-
-    protected function returnOldValueName(): void
-    {
-        $this->helper->addOldValue('name', $this->helper->getAllOfUsers()['name']);
-    }
-
-    protected function returnOldValueEmail(): void
-    {
-        $this->helper->addOldValue('email', $this->helper->getAllOfUsers()['email']);
+        $this->mySQL = new MySQL();
     }
 
     public function validation(): void
@@ -40,6 +34,12 @@ class Register
             $this->helper->addValidationError('email', 'Указана неправильная почта');
         }
 
+        if (!empty($this->helper->getAllOfUsers()['email'])) {
+            if ($this->mySQL->checkEmail($this->helper->getAllOfUsers()['email'])) {
+                $this->helper->addValidationError('email', 'Почта уже используется');
+            }
+        }
+
         if (empty($this->helper->getAllOfUsers()['password'])) {
             $this->helper->addValidationError('password', 'Введите пароль');
         }
@@ -47,19 +47,45 @@ class Register
             $this->helper->addValidationError('password_confirmation', 'Пароли не совпадают');
         }
 
+        if (!empty($this->helper->getAllOfUsers()['avatar']['tmp_name'])) {
+            $types = ['image/png', 'image/jpeg'];
 
+            if (!in_array($this->helper->getAllOfUsers()['avatar']['type'], $types)) {
+                $this->helper->addValidationError('avatar', 'Изображение профиля имеет не верный тип');
+            }
+
+            if ($this->helper->getAllOfUsers()['avatar']['size'] / 1000000 >= 1) {
+                $this->helper->addValidationError('avatar', 'Изображение должно быть меньше одного мб');
+            }
+        }
 
         $this->helper->addOldValue('name', $this->helper->getAllOfUsers()['name']);
         $this->helper->addOldValue('email', $this->helper->getAllOfUsers()['email']);
 
+    }
 
-        $this->helper->redirect('/register.php');
+    public function register(): void
+    {
+        $this->validation();
+
+
+        if (!empty($_SESSION['validation'])) {
+            $this->helper->redirect('/register.php');
+        }
+
+        $password = Password_hash($this->helper->getAllOfUsers()['password'], PASSWORD_DEFAULT);
+
+        $upload = $this->helper->uploadFile($this->helper->getAllOfUsers()['avatar'] ?? null, 'avatar_');
+
+        $this->mySQL->storeUser($this->helper->getAllOfUsers()['email'], $this->helper->getAllOfUsers()['name'], $password, $upload);
+        $this->helper->redirect('/home.php');
 
     }
+
 }
 
 $register = new Register();
-$register->validation();
+$register->register();
 
 
 
