@@ -54,8 +54,8 @@ class Helpers
     {
         return $_SESSION['oldValues'][$key] ?? null;
     }
-    public function clearOldValue(string $key): void
+    public function clearOldValue(): void
     {
-        $_SESSION['oldValues'][$key] = [];
+        $_SESSION['oldValues'] = [];
     }
 }
