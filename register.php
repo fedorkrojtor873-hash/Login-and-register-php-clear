@@ -13,7 +13,7 @@ $helper = new Helpers();
 <?php include_once __DIR__ . '/components/head.php' ?>
 <body>
 
-<form class="card" action="src/actions/Register.php" method="post" enctype="multipart/form-data">
+<form class="card" action="src/actions/register.php" method="post" enctype="multipart/form-data">
     <h2>Регистрация</h2>
 
     <label for="name">

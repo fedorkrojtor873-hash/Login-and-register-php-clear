@@ -33,9 +33,23 @@ class MySQL
     }
 
 
-    public function getAllByEmail(string $email): array
+    public function getAllByEmail(string $email): ?array
     {
         $sql = "SELECT * FROM users WHERE email = '$email' LIMIT 1";
+        $result = mysqli_query($this->dataBase->getConnection(), $sql);
+
+        if (!$result) {
+            return null;
+        }
+
+        $user = mysqli_fetch_assoc($result);
+
+        return $user ?: null;
+    }
+
+    public function getAllById(string $id): ?array
+    {
+        $sql = "SELECT * FROM users WHERE id = '$id' LIMIT 1";
         $result = mysqli_query($this->dataBase->getConnection(), $sql);
 
         if (!$result) {

@@ -23,7 +23,8 @@ class login
     {
         $email = $_POST['email'];
         $password = $_POST['password'];
-        $passwordDb = $this->mySQL->getAllByEmail($email);
+        $user = $this->mySQL->getAllByEmail($email);
+        $passwordDb = $user['password'];
 
 
         if (empty($email)) {
@@ -34,7 +35,7 @@ class login
             $this->helper->addValidationError('password', 'Введите пароль');
         }
 
-        if (!password_verify($password, $passwordDb)) {
+        if (password_verify($password, $passwordDb)) {
             $this->helper->addValidationError('password', 'Неверный пароль');
         }
 
@@ -49,7 +50,7 @@ class login
             $this->helper->redirect('/');
         }
 
-
+        $this->helper->setUserId($user['id']);
 
         $this->helper->redirect('/home.php');
 
