@@ -64,6 +64,12 @@ class Helpers
         $_SESSION['oldValues'] = [];
     }
 
+    public function setUserId(int $userId): void
+    {
+        $_SESSION['auth'] = true;
+        $_SESSION['user']['id'] = $userId;
+    }
+
 
     public function uploadFile(array $file = null, string $prefix = ''): ?string
     {
@@ -71,21 +77,25 @@ class Helpers
             return null;
         }
 
-        $uploadPath = __DIR__ . '/../uploads/';
 
-        if (!is_dir($uploadPath)) {
-            mkdir($uploadPath, 0755, true);
+        $uploadDir = __DIR__ . '/../uploads/';
+
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
         }
 
         $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
         $fileName = $prefix . time() . '.' . $extension;
-        $path = $uploadPath . '/' . $fileName;
 
-        if (!move_uploaded_file($file['tmp_name'], $path)) {
-            die('Ошибка добавления файла');
+        $fullPath = $uploadDir . $fileName;
+
+        if (!move_uploaded_file($file['tmp_name'], $fullPath)) {
+            die('Ошибка загрузки файла');
         }
 
-        return $path;
+
+        return '/uploads/' . $fileName;
     }
+
 
 }

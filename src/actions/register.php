@@ -9,7 +9,7 @@ require_once __DIR__ . '/../Helpers.php';
 require_once __DIR__ . '/../Db/MYSQL.php';
 
 
-class Register
+class register
 {
 
     protected Helpers $helper;
@@ -67,7 +67,7 @@ class Register
     public function register(): void
     {
         $this->validation();
-
+        
 
         if (!empty($_SESSION['validation'])) {
             $this->helper->redirect('/register.php');
@@ -81,7 +81,7 @@ class Register
 
 }
 
-$register = new Register();
+$register = new register();
 $register->register();
 
 
